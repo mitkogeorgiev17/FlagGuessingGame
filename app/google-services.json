@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "240785435421",
+    "project_id": "pmu-flag-guessing-game",
+    "storage_bucket": "pmu-flag-guessing-game.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240785435421:android:67cb7c78593b624fcdcff4",
+        "android_client_info": {
+          "package_name": "com.tusofia.flagguessinggame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqOUDXRFx9IGlMxH4Y9MMqhu9Bc1P_mL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
