@@ -2,4 +2,12 @@
     <string name="app_name">FlagGuessingGame</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="flag_image">Flag</string>
+    <string name="option1">Option 1</string>
+    <string name="option2">Option 2</string>
+    <string name="option3">Option 3</string>
+    <string name="option4">Option 4</string>
+    <string name="game_over">GAME OVER</string>
+    <string name="your_score_0">Your score: 0</string>
+    <string name="new_game">New game</string>
 </resources>
