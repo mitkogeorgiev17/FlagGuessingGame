@@ -1,14 +1,17 @@
-package com.tusofia.flagguessinggame;
+package com.tusofia.flagguessinggame.entity;
 
 public class Country {
-    private String name;
-    private String flagUrl;
     private String difficulty;
+    private String flagUrl;
+    private String name;
 
-    public Country(String name, String flagUrl, String difficulty) {
-        this.name = name;
-        this.flagUrl = flagUrl;
+    public Country() {
+    }
+
+    public Country(String difficulty, String flagUrl, String name) {
         this.difficulty = difficulty;
+        this.flagUrl = flagUrl;
+        this.name = name;
     }
 
     public String getName() {

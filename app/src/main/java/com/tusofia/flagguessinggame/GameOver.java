@@ -1,5 +1,6 @@
 package com.tusofia.flagguessinggame;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,48 +16,39 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+public class GameOver extends AppCompatActivity {
 
-    FirebaseAuth mAuth;
-    Button logout;
-    TextView textView;
+    FirebaseAuth auth;
     FirebaseUser user;
-    TextView startGame;
+    Button logout;
 
-
+    TextView scoreText;
+    TextView highScoreText;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game_over);
 
-        mAuth = FirebaseAuth.getInstance();
-        logout = findViewById(R.id.logout);
-        textView = findViewById(R.id.user_details);
-        startGame = findViewById(R.id.flag_quiz);
+        auth = FirebaseAuth.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
-        user = mAuth.getCurrentUser();
+        logout = findViewById(R.id.new_game);
+        scoreText = findViewById(R.id.your_score);
+        highScoreText = findViewById(R.id.high_score);
 
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
-        } else {
-            textView.setText("Welcome, " + user.getEmail() + "!");
         }
 
+        Intent scoreIntent = getIntent();
+        scoreText.setText("Your score: " + scoreIntent.getIntExtra("score", 0));
+        highScoreText.setText("High score: " + + scoreIntent.getIntExtra("highScore", 0));
+
         logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        startGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), FlagQuiz.class);
@@ -64,6 +56,5 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 }

@@ -12,8 +12,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Material3.Dark"
+        android:theme="@style/Theme.Material3.Dark.NoActionBar"
         tools:targetApi="31">
+        <activity
+            android:name=".GameOver"
+            android:exported="false" />
         <activity
             android:name=".FlagQuiz"
             android:exported="false" />
@@ -33,7 +36,7 @@
             android:theme="@style/Theme.Material3.Dark.NoActionBar" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>
