@@ -1,0 +1,57 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/flagImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/flag_image" />
+
+    <LinearLayout
+        android:id="@+id/optionsLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/flagImageView"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/option1Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="120dp"
+            android:text="@string/option1" />
+
+        <Button
+            android:id="@+id/option2Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="120dp"
+            android:text="@string/option2" />
+
+        <Button
+            android:id="@+id/option3Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="120dp"
+            android:text="@string/option3" />
+
+        <Button
+            android:id="@+id/option4Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:paddingHorizontal="120dp"
+            android:text="@string/option4" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     TextView textView;
     FirebaseUser user;
+    TextView startGame;
 
 
     @Override
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         button = findViewById(R.id.logout);
         textView = findViewById(R.id.user_details);
+        startGame = findViewById(R.id.flag_quiz);
 
         user = mAuth.getCurrentUser();
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-            textView.setText(user.getEmail());
+            textView.setText("Welcome, " + user.getEmail() + "!");
         }
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
 
                 Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        startGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), FlagQuiz.class);
                 startActivity(intent);
                 finish();
             }

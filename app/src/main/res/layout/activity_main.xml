@@ -14,7 +14,24 @@
         android:id="@+id/user_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:text="Welcome, user!"
+        android:textColor="@color/white"
+        android:textSize="16dp"
+        android:layout_marginBottom="200dp"/>
+
+    <TextView
+        android:id="@+id/flag_quiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start game"
+        android:textSize="40dp"
+        android:padding="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_edittext_background_purple"
+        android:layout_marginBottom="200dp"
+        />
+
 
     <Button
         android:id="@+id/logout"
