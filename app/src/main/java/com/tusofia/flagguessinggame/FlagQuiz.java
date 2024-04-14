@@ -28,10 +28,13 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class FlagQuiz extends AppCompatActivity {
-
+    private final static String EASY = "EASY";
+    private final static String MEDIUM = "MEDIUM";
+    private final static String HARD = "HARD";
     FirebaseAuth auth;
     FirebaseUser user;
     FirebaseFirestore db;
@@ -41,9 +44,13 @@ public class FlagQuiz extends AppCompatActivity {
     TextView scoreTextView, multiplierTextView, livesTextView;
 
     List<Country> countries;
+    List<Country> countriesEasy;
+    List<Country> countriesMedium;
+    List<Country> countriesHard;
     List<String> options;
     Country correctCountry;
-
+    int hardCap = 40;
+    int mediumCap = 15;
     int score = 0;
     int streak = 0;
     int multiplier = 1;
@@ -92,15 +99,38 @@ public class FlagQuiz extends AppCompatActivity {
     }
 
     private void loadCountries() {
+        countriesEasy = new ArrayList<>();
+        countriesMedium = new ArrayList<>();
+        countriesHard = new ArrayList<>();
         countries = new ArrayList<>();
-
+        Random random = new Random();
         db.collection("countries")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    public void onSuccess(com.google.firebase.firestore.QuerySnapshot queryDocumentSnapshots) {
                         for (DocumentSnapshot document : queryDocumentSnapshots) {
                             Country country = document.toObject(Country.class);
+                            if (country == null) {
+                                continue;
+                            }
+                            String difficulty = country.getDifficulty();
+                            if (difficulty == null) {
+                                continue;
+                            }
+                            switch (difficulty.toUpperCase()) {
+                                case EASY:
+                                    countriesEasy.add(country);
+                                    break;
+                                case MEDIUM:
+                                    countriesMedium.add(country);
+                                    break;
+                                case HARD:
+                                    countriesHard.add(country);
+                                    break;
+                                default:
+                                    break;
+                            }
                             countries.add(country);
                         }
                         startQuiz();
@@ -116,8 +146,7 @@ public class FlagQuiz extends AppCompatActivity {
 
     private void startQuiz() {
         Random random = new Random();
-        correctCountry = countries.get(random.nextInt(countries.size()));
-
+        correctCountry = returnCountry(checkDifficulty((score)));
         options = new ArrayList<>();
         options.add(correctCountry.getName());
         while (options.size() < 4) {
@@ -126,9 +155,12 @@ public class FlagQuiz extends AppCompatActivity {
                 options.add(randomCountry.getName());
             }
         }
-
         Collections.shuffle(options);
         loadImage(correctCountry.getFlagUrl());
+        option1Button.setText(options.get(0));
+        option2Button.setText(options.get(1));
+        option3Button.setText(options.get(2));
+        option4Button.setText(options.get(3));
     }
 
     private void checkAnswer(String selectedOption) {
@@ -138,6 +170,7 @@ public class FlagQuiz extends AppCompatActivity {
             multiplier = Math.min(streak, 5);
             score += 1 * multiplier;
             selectedButton.setBackgroundColor(Color.GREEN);
+            countries.removeIf(country -> Objects.equals(country.getName(), correctCountry.getName()));
         } else {
             streak = 0;
             multiplier = 1;
@@ -191,7 +224,29 @@ public class FlagQuiz extends AppCompatActivity {
         multiplierTextView.setText("Multiplier: x" + multiplier);
         livesTextView.setText("Lives: " + lives);
     }
-
+    private String checkDifficulty(int score)
+    {
+        if(score > mediumCap)
+        {
+            return MEDIUM;
+        }
+        if(score>hardCap)
+        {
+            return HARD;
+        }
+        return EASY;
+    }
+    private Country returnCountry(String difficulty)
+    {
+        Random random = new Random();
+        switch(difficulty)
+        {
+            case EASY: return countriesEasy.get(random.nextInt(countriesEasy.size()));
+            case MEDIUM:return countriesMedium.get(random.nextInt(countriesMedium.size()));
+            case HARD:return countriesHard.get(random.nextInt(countriesHard.size()));
+            default: return null;
+        }
+    }
     private Button findButtonByText(String text) {
         if (option1Button.getText().toString().equals(text)) return option1Button;
         if (option2Button.getText().toString().equals(text)) return option2Button;
