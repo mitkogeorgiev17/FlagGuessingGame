@@ -1,10 +1,13 @@
 package com.tusofia.flagguessinggame;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -31,17 +34,19 @@ public class FlagQuiz extends AppCompatActivity {
 
     FirebaseAuth auth;
     FirebaseUser user;
-
     FirebaseFirestore db;
 
     ImageView flagImageView;
     Button option1Button, option2Button, option3Button, option4Button;
+    TextView scoreTextView, multiplierTextView;
 
     List<Country> countries;
     List<String> options;
     Country correctCountry;
 
     int score = 0;
+    int streak = 0;
+    int multiplier = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +63,9 @@ public class FlagQuiz extends AppCompatActivity {
         option2Button = findViewById(R.id.option2Button);
         option3Button = findViewById(R.id.option3Button);
         option4Button = findViewById(R.id.option4Button);
+        scoreTextView = findViewById(R.id.scoreTextView);
+        multiplierTextView = findViewById(R.id.multiplierTextView);
+        updateViews();
 
         if (user == null) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
@@ -67,33 +75,18 @@ public class FlagQuiz extends AppCompatActivity {
 
         loadCountries();
 
-        option1Button.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener answerClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAnswer(option1Button.getText().toString());
+                Button clickedButton = (Button) v;
+                checkAnswer(clickedButton.getText().toString());
             }
-        });
+        };
 
-        option2Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkAnswer(option2Button.getText().toString());
-            }
-        });
-
-        option3Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkAnswer(option3Button.getText().toString());
-            }
-        });
-
-        option4Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkAnswer(option4Button.getText().toString());
-            }
-        });
+        option1Button.setOnClickListener(answerClickListener);
+        option2Button.setOnClickListener(answerClickListener);
+        option3Button.setOnClickListener(answerClickListener);
+        option4Button.setOnClickListener(answerClickListener);
     }
 
     private void loadCountries() {
@@ -103,13 +96,11 @@ public class FlagQuiz extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(com.google.firebase.firestore.QuerySnapshot queryDocumentSnapshots) {
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (DocumentSnapshot document : queryDocumentSnapshots) {
                             Country country = document.toObject(Country.class);
                             countries.add(country);
                         }
-
-                        // Start quiz
                         startQuiz();
                     }
                 })
@@ -122,7 +113,6 @@ public class FlagQuiz extends AppCompatActivity {
     }
 
     private void startQuiz() {
-        int score = 0;
         Random random = new Random();
         correctCountry = countries.get(random.nextInt(countries.size()));
 
@@ -134,36 +124,73 @@ public class FlagQuiz extends AppCompatActivity {
                 options.add(randomCountry.getName());
             }
         }
-
-        // Shuffle the options list
         Collections.shuffle(options);
-
-        // Load the flag image
         loadImage(correctCountry.getFlagUrl());
+    }
+    private void checkAnswer(String selectedOption) {
+        Button selectedButton = findButtonByText(selectedOption);
+        if (selectedOption.equals(correctCountry.getName())) {
+            streak++;
+            multiplier = Math.min(streak, 5);
+            score += 1 * multiplier;
+            Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
+            selectedButton.setBackgroundColor(Color.GREEN);
+        } else {
+            streak = 0;
+            multiplier = 1;
+            Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
+            selectedButton.setBackgroundColor(Color.RED);
+            Intent intent = new Intent(getApplicationContext(), GameOver.class);
+            intent.putExtra("score", score);
+            startActivity(intent);
+            finish();
+        }
+        updateViews();
+        new Handler().postDelayed(this::startQuiz, 1000);
+    }
 
-        // Set the options on buttons
+    private void loadImage(String imageUrl) {
+        Picasso.get().load(imageUrl).into(flagImageView, new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                setOptions();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(FlagQuiz.this, "Error loading image.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setOptions() {
         option1Button.setText(options.get(0));
         option2Button.setText(options.get(1));
         option3Button.setText(options.get(2));
         option4Button.setText(options.get(3));
+        resetButtonColors();
+        updateViews();
     }
 
-    private void checkAnswer(String selectedOption) {
-        if (selectedOption.equals(correctCountry.getName())) {
-            Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
-            score++;
-        } else {
-            Intent intent = new Intent(getApplicationContext(), GameOver.class);
-            intent.putExtra("score", score);
-            intent.putExtra("highScore", 0);
-            startActivity(intent);
-            finish();
-        }
 
-        startQuiz();
+    private void resetButtonColors() {
+        int defaultColor = Color.parseColor("#FF8291FF");
+        option1Button.setBackgroundColor(defaultColor);
+        option2Button.setBackgroundColor(defaultColor);
+        option3Button.setBackgroundColor(defaultColor);
+        option4Button.setBackgroundColor(defaultColor);
     }
 
-    private void loadImage(String imageUrl) {
-        Picasso.get().load(imageUrl).into(flagImageView);
+    private void updateViews() {
+        scoreTextView.setText("Score: " + score);
+        multiplierTextView.setText("Multiplier: x" + multiplier);
+    }
+
+    private Button findButtonByText(String text) {
+        if (option1Button.getText().toString().equals(text)) return option1Button;
+        if (option2Button.getText().toString().equals(text)) return option2Button;
+        if (option3Button.getText().toString().equals(text)) return option3Button;
+        if (option4Button.getText().toString().equals(text)) return option4Button;
+        return null;
     }
 }
