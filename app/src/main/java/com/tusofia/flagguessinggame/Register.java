@@ -30,17 +30,19 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Register extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     ProgressBar progressBar;
 
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextName, editTextEmail, editTextPassword, editTextConfirmPassword;
     Button buttonReg;
     TextView textView;
 
@@ -64,6 +66,8 @@ public class Register extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        editTextName = findViewById(R.id.name);
+        editTextConfirmPassword = findViewById(R.id.confirm_password);
         buttonReg = findViewById(R.id.btn_register);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.click_to_login);
@@ -72,8 +76,14 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(VISIBLE);
-                String email, password;
+                String name, email, password;
 
+                if (!Objects.equals(String.valueOf(editTextPassword.getText()), String.valueOf(editTextConfirmPassword.getText()))) {
+                    Toast.makeText(Register.this, "Passwords don't match.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                name = String.valueOf(editTextName.getText());
                 email = String.valueOf(editTextEmail.getText());
                 password = encodePassword(editTextPassword);
 
@@ -95,6 +105,13 @@ public class Register extends AppCompatActivity {
                                     FirebaseUser firebaseUser = mAuth.getCurrentUser();
                                     if (firebaseUser != null) {
                                         String userId = firebaseUser.getUid();
+
+                                        UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(name)
+                                                .build();
+
+                                        firebaseUser.updateProfile(changeRequest);
+
                                         Map<String, Integer> userData = new HashMap<>();
                                         userData.put("highScore", 0);
                                         FirebaseFirestore.getInstance().collection("users")

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         } else {
-            textView.setText("Welcome, " + user.getEmail() + "!");
+            textView.setText("Welcome, " + user.getDisplayName() + "!");
         }
 
         logout.setOnClickListener(new View.OnClickListener() {
