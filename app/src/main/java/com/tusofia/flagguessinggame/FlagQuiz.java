@@ -13,10 +13,14 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -27,9 +31,12 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 public class FlagQuiz extends AppCompatActivity {
     private final static String EASY = "EASY";
@@ -168,7 +175,7 @@ public class FlagQuiz extends AppCompatActivity {
         if (selectedOption.equals(correctCountry.getName())) {
             streak++;
             multiplier = Math.min(streak, 5);
-            score += 1 * multiplier;
+            score += multiplier;
             selectedButton.setBackgroundColor(Color.GREEN);
             countries.removeIf(country -> Objects.equals(country.getName(), correctCountry.getName()));
         } else {
@@ -179,14 +186,77 @@ public class FlagQuiz extends AppCompatActivity {
             Button correctButton = findButtonByText(correctCountry.getName());
             correctButton.setBackgroundColor(Color.GREEN);
             if (lives <= 0) {
+
                 Intent intent = new Intent(getApplicationContext(), GameOver.class);
-                intent.putExtra("score", score);
-                startActivity(intent);
-                finish();
+                checkIfHighScoreBeat(score, new HighScoreCallback() {
+                    @Override
+                    public void onHighScoreChecked(long highScore) {
+                        intent.putExtra("highScore", highScore);
+                        intent.putExtra("score", score);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
             }
         }
         updateViews();
         new Handler().postDelayed(this::startQuiz, 1000);
+    }
+
+    private void checkIfHighScoreBeat(int score, HighScoreCallback callback) {
+        DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(user.getUid());
+
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                long highScore = 0; // Default value if high score not found
+                if (documentSnapshot.exists()) {
+                    Map<String, Object> data = documentSnapshot.getData();
+
+                    Map<String, Long> resultMap = new HashMap<>();
+
+                    for (Map.Entry<String, Object> entry : data.entrySet()) {
+                        resultMap.put(entry.getKey(), (long) (entry.getValue()));
+                    }
+
+                    Long highScoreInteger = resultMap.get("highScore");
+                    if (highScoreInteger != null) {
+                        highScore = highScoreInteger;
+                    }
+                }
+
+                if (score > highScore) {
+                    updateHighScore(docRef, score);
+                    highScore = score;
+                }
+
+                callback.onHighScoreChecked(highScore);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onHighScoreChecked(0);
+            }
+        });
+    }
+
+    private void updateHighScore(DocumentReference docRef, int newHighScore) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("highScore", newHighScore);
+
+        docRef.update(updates)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(FlagQuiz.this, "New high score!", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(FlagQuiz.this, "Failed to update high score", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void loadImage(String imageUrl) {

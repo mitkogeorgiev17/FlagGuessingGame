@@ -48,7 +48,7 @@ public class GameOver extends AppCompatActivity {
 
         Intent scoreIntent = getIntent();
         scoreText.setText("Your score: " + scoreIntent.getIntExtra("score", 0));
-        highScoreText.setText("High score: " + + scoreIntent.getIntExtra("highScore", 0));
+        highScoreText.setText("High score: " + + scoreIntent.getLongExtra("highScore", 0));
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
