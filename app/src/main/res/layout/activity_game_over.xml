@@ -8,53 +8,58 @@
     android:background="@drawable/background"
     tools:context=".GameOver"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="16dp"
+    android:clipToPadding="false"
+    android:clipChildren="false">
 
     <TextView
         android:id="@+id/game_over"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/game_over"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:padding="20dp"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@drawable/rounded_edittext_background_purple"
         android:layout_marginBottom="50dp"
-        />
+        android:elevation="4dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="150dp"
+        android:layout_marginBottom="50dp"
         android:gravity="center">
 
         <TextView
             android:id="@+id/your_score"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/your_score_0"
-            android:textSize="20dp"
+            android:layout_weight="1"
+            android:text="@string/your_score"
+            android:textSize="20sp"
             android:padding="20dp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/rounded_edittext_background_purple"
             android:layout_marginEnd="10dp"
-        />
+            android:elevation="4dp" />
 
         <TextView
             android:id="@+id/high_score"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="High score: 0"
-            android:textSize="20dp"
+            android:layout_weight="1"
+            android:text="@string/high_score"
+            android:textSize="20sp"
             android:padding="20dp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:background="@drawable/rounded_edittext_background_purple"
             android:layout_marginStart="10dp"
-        />
+            android:elevation="4dp" />
     </LinearLayout>
 
     <Button
@@ -63,6 +68,15 @@
         android:layout_height="wrap_content"
         android:text="@string/new_game"
         android:textSize="40dp"
+        />
+
+    <Button
+        android:id="@+id/return_to_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/return_to_main_menu"
+        android:textSize="20dp"
+        android:layout_marginTop="120dp"
         />
 
 </LinearLayout>

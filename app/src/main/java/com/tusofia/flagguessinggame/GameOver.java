@@ -21,6 +21,7 @@ public class GameOver extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
     Button logout;
+    Button mainMenu;
 
     TextView scoreText;
     TextView highScoreText;
@@ -35,6 +36,7 @@ public class GameOver extends AppCompatActivity {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         logout = findViewById(R.id.new_game);
+        mainMenu = findViewById(R.id.return_to_menu);
         scoreText = findViewById(R.id.your_score);
         highScoreText = findViewById(R.id.high_score);
 
@@ -52,6 +54,15 @@ public class GameOver extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), FlagQuiz.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        mainMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
