@@ -292,7 +292,7 @@ public class FlagQuiz extends AppCompatActivity {
     private void updateViews() {
         scoreTextView.setText("Score: " + score);
         multiplierTextView.setText("Multiplier: x" + multiplier);
-        livesTextView.setText("Lives: " + lives);
+        livesTextView.setText(String.valueOf(lives));
     }
     private String checkDifficulty(int score)
     {

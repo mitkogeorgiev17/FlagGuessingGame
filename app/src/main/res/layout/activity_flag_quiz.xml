@@ -3,16 +3,35 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:gravity="center">
-    <TextView
-        android:id="@+id/livesTextView"
-        android:layout_width="wrap_content"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lives: 3"
-        android:textSize="24sp"
-        android:layout_below="@id/scoreTextView"
-        android:layout_centerHorizontal="true"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="-90dp" />
+        android:gravity="center_horizontal"
+        android:layout_marginTop="-150dp"
+        >
+
+        <ImageView
+            android:id="@+id/heart_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/heart"
+            />
+
+        <TextView
+            android:id="@+id/livesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/heart_icon"
+            android:layout_marginStart="8dp"
+            android:text="3"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:layout_centerVertical="true"
+        />
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/scoreTextView"
         android:layout_width="wrap_content"
