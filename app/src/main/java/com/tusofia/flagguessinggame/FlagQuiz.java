@@ -28,6 +28,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class FlagQuiz extends AppCompatActivity {
@@ -138,6 +139,7 @@ public class FlagQuiz extends AppCompatActivity {
             multiplier = Math.min(streak, 5);
             score += 1 * multiplier;
             selectedButton.setBackgroundColor(Color.GREEN);
+            countries.removeIf(country -> Objects.equals(country.getName(), correctCountry.getName()));
         } else {
             streak = 0;
             multiplier = 1;
