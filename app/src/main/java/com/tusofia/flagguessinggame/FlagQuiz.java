@@ -38,7 +38,7 @@ public class FlagQuiz extends AppCompatActivity {
 
     ImageView flagImageView;
     Button option1Button, option2Button, option3Button, option4Button;
-    TextView scoreTextView, multiplierTextView;
+    TextView scoreTextView, multiplierTextView, livesTextView;
 
     List<Country> countries;
     List<String> options;
@@ -47,6 +47,7 @@ public class FlagQuiz extends AppCompatActivity {
     int score = 0;
     int streak = 0;
     int multiplier = 1;
+    int lives = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class FlagQuiz extends AppCompatActivity {
         option4Button = findViewById(R.id.option4Button);
         scoreTextView = findViewById(R.id.scoreTextView);
         multiplierTextView = findViewById(R.id.multiplierTextView);
+        livesTextView = findViewById(R.id.livesTextView);
         updateViews();
 
         if (user == null) {
@@ -124,26 +126,31 @@ public class FlagQuiz extends AppCompatActivity {
                 options.add(randomCountry.getName());
             }
         }
+
         Collections.shuffle(options);
         loadImage(correctCountry.getFlagUrl());
     }
+
     private void checkAnswer(String selectedOption) {
         Button selectedButton = findButtonByText(selectedOption);
         if (selectedOption.equals(correctCountry.getName())) {
             streak++;
             multiplier = Math.min(streak, 5);
             score += 1 * multiplier;
-            Toast.makeText(this, "Correct!", Toast.LENGTH_SHORT).show();
             selectedButton.setBackgroundColor(Color.GREEN);
         } else {
             streak = 0;
             multiplier = 1;
-            Toast.makeText(this, "Wrong!", Toast.LENGTH_SHORT).show();
+            lives--;
             selectedButton.setBackgroundColor(Color.RED);
-            Intent intent = new Intent(getApplicationContext(), GameOver.class);
-            intent.putExtra("score", score);
-            startActivity(intent);
-            finish();
+            Button correctButton = findButtonByText(correctCountry.getName());
+            correctButton.setBackgroundColor(Color.GREEN);
+            if (lives <= 0) {
+                Intent intent = new Intent(getApplicationContext(), GameOver.class);
+                intent.putExtra("score", score);
+                startActivity(intent);
+                finish();
+            }
         }
         updateViews();
         new Handler().postDelayed(this::startQuiz, 1000);
@@ -169,9 +176,7 @@ public class FlagQuiz extends AppCompatActivity {
         option3Button.setText(options.get(2));
         option4Button.setText(options.get(3));
         resetButtonColors();
-        updateViews();
     }
-
 
     private void resetButtonColors() {
         int defaultColor = Color.parseColor("#FF8291FF");
@@ -184,6 +189,7 @@ public class FlagQuiz extends AppCompatActivity {
     private void updateViews() {
         scoreTextView.setText("Score: " + score);
         multiplierTextView.setText("Multiplier: x" + multiplier);
+        livesTextView.setText("Lives: " + lives);
     }
 
     private Button findButtonByText(String text) {
