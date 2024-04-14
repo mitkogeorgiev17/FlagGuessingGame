@@ -8,6 +8,8 @@
     <string name="option3">Option 3</string>
     <string name="option4">Option 4</string>
     <string name="game_over">GAME OVER</string>
-    <string name="your_score_0">Your score: 0</string>
+    <string name="your_score">Your score: ?</string>
     <string name="new_game">New game</string>
+    <string name="return_to_main_menu">Return to main menu</string>
+    <string name="high_score">High score = ?</string>
 </resources>

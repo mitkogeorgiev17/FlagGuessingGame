@@ -3,14 +3,46 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:gravity="center">
-
+    <TextView
+        android:id="@+id/livesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lives: 3"
+        android:textSize="24sp"
+        android:layout_below="@id/scoreTextView"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="-90dp" />
+    <TextView
+        android:id="@+id/scoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Score: 0"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="-80dp"/>
+    <TextView
+        android:id="@+id/multiplierTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Multiplier: x1"
+        android:textSize="18sp"
+        android:layout_below="@id/scoreTextView"
+        android:layout_centerHorizontal="true"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="-5dp"/>
     <ImageView
         android:id="@+id/flagImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:contentDescription="@string/flag_image" />
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/flag_image"
+        android:scaleX="1.25"
+        android:scaleY="1.25"
+        />
 
     <LinearLayout
         android:id="@+id/optionsLayout"
@@ -22,55 +54,49 @@
 
         <Button
             android:id="@+id/option1Button"
-            android:layout_width="370dp"
+            android:layout_width="390dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingHorizontal="132dp"
-            android:paddingVertical="16dp"
-            android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:text="@string/option1"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
             android:maxLines="1"
-            android:ellipsize="end" />
+            android:paddingVertical="10dp"
+            android:text="@string/option1"
+            android:textSize="20sp" />
+
 
         <Button
             android:id="@+id/option2Button"
-            android:layout_width="370dp"
+            android:layout_width="390dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingHorizontal="132dp"
-            android:paddingVertical="16dp"
-            android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:text="@string/option2"
+            android:gravity="center"
             android:maxLines="1"
-            android:ellipsize="end" />
+            android:paddingVertical="10dp"
+            android:text="@string/option2"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/option3Button"
-            android:layout_width="370dp"
+            android:layout_width="390dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingHorizontal="132dp"
-            android:paddingVertical="16dp"
-            android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:text="@string/option3"
+            android:gravity="center"
             android:maxLines="1"
-            android:ellipsize="end" />
+            android:paddingVertical="10dp"
+            android:text="@string/option3"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/option4Button"
-            android:layout_width="370dp"
+            android:layout_width="390dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingHorizontal="132dp"
-            android:paddingVertical="16dp"
-            android:gravity="center"
             android:layout_gravity="center_horizontal"
-            android:text="@string/option4"
+            android:gravity="center"
             android:maxLines="1"
-            android:ellipsize="end" />
+            android:paddingVertical="10dp"
+            android:text="@string/option4"
+            android:textSize="20sp" />
 
 
 
