@@ -26,6 +26,24 @@
         android:layout_height="wrap_content" />
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/name"
+        android:layout_width="287dp"
+        android:layout_height="45dp"
+        android:background="@drawable/rounded_edittext_background"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center|center_horizontal"
+        android:hint="Name"
+        android:textColorHint="#BE99FF"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.367"
+        android:layout_marginBottom="15dp"/>
+
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/email"
         android:layout_width="287dp"
         android:layout_height="45dp"
@@ -34,6 +52,7 @@
         android:gravity="center|center_horizontal"
         android:hint="Email"
         android:textColor="@color/black"
+        android:textColorHint="#BE99FF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -51,6 +70,27 @@
         android:gravity="center|center_horizontal"
         android:hint="Password"
         android:textColor="@color/black"
+        android:textColorHint="#BE99FF"
+        android:inputType="textPassword"
+        android:scaleY="1.1"
+        android:layout_marginBottom="15dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.46" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/confirm_password"
+        android:layout_width="287dp"
+        android:layout_height="45dp"
+        android:background="@drawable/rounded_edittext_background"
+        android:ems="10"
+        android:gravity="center|center_horizontal"
+        android:hint="Confirm password"
+        android:textColor="@color/black"
+        android:textColorHint="#BE99FF"
         android:inputType="textPassword"
         android:scaleY="1.1"
         android:layout_marginBottom="15dp"
