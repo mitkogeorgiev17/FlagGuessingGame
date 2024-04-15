@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FlagGuessingGame</string>
+    <string name="app_name">Guess the Flag</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="flag_image">Flag</string>
