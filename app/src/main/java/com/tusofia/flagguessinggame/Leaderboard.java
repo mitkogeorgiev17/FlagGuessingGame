@@ -5,14 +5,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,9 +21,7 @@ import com.tusofia.flagguessinggame.entity.LeaderboardAdapter;
 import com.tusofia.flagguessinggame.entity.LeaderboardEntry;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Leaderboard extends AppCompatActivity {
     FirebaseAuth auth;
@@ -72,7 +66,7 @@ public class Leaderboard extends AppCompatActivity {
         List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
         db.collection("users")
                 .orderBy("highScore", Query.Direction.DESCENDING)
-                .limit(10)
+                .limit(15)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
