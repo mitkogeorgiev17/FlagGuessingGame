@@ -12,4 +12,5 @@
     <string name="new_game">New game</string>
     <string name="return_to_main_menu">Return to main menu</string>
     <string name="high_score">High score = ?</string>
+    <string name="leaderboard">Leaderboard 👑</string>
 </resources>

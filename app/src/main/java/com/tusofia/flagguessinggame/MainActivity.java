@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     Button logout;
+    Button leaderboard;
     TextView textView;
     FirebaseUser user;
     TextView startGame;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         logout = findViewById(R.id.logout);
+        leaderboard = findViewById(R.id.leaderboard);
         textView = findViewById(R.id.user_details);
         startGame = findViewById(R.id.flag_quiz);
 
@@ -51,6 +53,15 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseAuth.getInstance().signOut();
 
                 Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        leaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Leaderboard.class);
                 startActivity(intent);
                 finish();
             }

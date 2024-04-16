@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -209,24 +210,31 @@ public class FlagQuiz extends AppCompatActivity {
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                long highScore = 0; // Default value if high score not found
+                long highScore = 0;
                 if (documentSnapshot.exists()) {
                     Map<String, Object> data = documentSnapshot.getData();
-
-                    Map<String, Long> resultMap = new HashMap<>();
-
-                    for (Map.Entry<String, Object> entry : data.entrySet()) {
-                        resultMap.put(entry.getKey(), (long) (entry.getValue()));
+                    if (data != null) {
+                        Object highScoreField = data.get("highScore");
+                        if (highScoreField instanceof Map) {
+                            Map<String, Long> highScoreMap = (Map<String, Long>) highScoreField;
+                            Long highScoreValue = highScoreMap.get("highScore");
+                            if (highScoreValue != null) {
+                                highScore = highScoreValue;
+                            } else {
+                                Log.e("Firestore", "High score value not found in the highScoreMap");
+                            }
+                        } else {
+                            Log.e("Firestore", "High score field is not of type Map");
+                        }
+                    } else {
+                        Log.e("Firestore", "Document data is null");
                     }
-
-                    Long highScoreInteger = resultMap.get("highScore");
-                    if (highScoreInteger != null) {
-                        highScore = highScoreInteger;
-                    }
+                } else {
+                    Log.e("Firestore", "Document does not exist");
                 }
 
                 if (score > highScore) {
-                    updateHighScore(docRef, score);
+                    updateHighScore(docRef, score, user.getDisplayName());
                     highScore = score;
                 }
 
@@ -240,9 +248,10 @@ public class FlagQuiz extends AppCompatActivity {
         });
     }
 
-    private void updateHighScore(DocumentReference docRef, int newHighScore) {
+    private void updateHighScore(DocumentReference docRef, int newHighScore, String name) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("highScore", newHighScore);
+        updates.put("name", name);
 
         docRef.update(updates)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
