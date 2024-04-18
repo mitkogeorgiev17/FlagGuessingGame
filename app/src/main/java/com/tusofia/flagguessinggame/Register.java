@@ -3,12 +3,11 @@ package com.tusofia.flagguessinggame;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-import static com.tusofia.flagguessinggame.PasswordEncoder.encodePassword;
+import static com.tusofia.flagguessinggame.DBCryptService.encodePassword;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -18,9 +17,6 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
