@@ -26,11 +26,9 @@ public class PasswordEncoder {
                 hexString.append(hex);
             }
 
-            // Return the hexadecimal representation of the hash
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            // Handle error (e.g., return null or throw an exception)
             return null;
         }
     }
