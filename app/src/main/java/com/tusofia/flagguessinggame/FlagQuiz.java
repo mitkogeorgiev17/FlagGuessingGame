@@ -57,8 +57,8 @@ public class FlagQuiz extends AppCompatActivity {
     List<Country> countriesHard;
     List<String> options;
     Country correctCountry;
-    int hardCap = 40;
-    int mediumCap = 15;
+    int hardCap = 100;
+    int mediumCap = 50;
     int score = 0;
     int streak = 0;
     int multiplier = 1;
